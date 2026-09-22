@@ -1,6 +1,6 @@
 {
   "name": "flashchat-core",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Pure logic shared by the Flash Chat engine and the POS. No I/O.",
   "license": "UNLICENSED",
   "main": "dist/index.js",
@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run build && node --test test/*.test.js",
-    "verify": "npm run build && git diff --exit-code -- dist"
+    "verify": "npm run build && git diff --exit-code -- dist && node -e \"const v=require('./package.json').version,t=require('child_process').execSync('git describe --tags --abbrev=0').toString().trim();if(t!=='v'+v)throw new Error(`tag ${t} != version ${v}`)\""
   },
   "devDependencies": {
     "typescript": "^5.6.0"

@@ -52,5 +52,15 @@ npm install
 npm test        # builds, then runs the contract table
 ```
 
-Releasing is a tag. Bump the version, tag it, push the tag, then move each
-consumer's pin deliberately — never with a range.
+Releasing is a tag. Bump `version`, run `npm run verify`, commit, tag
+`v<version>`, push, then move each consumer's pin deliberately — never with a
+range.
+
+`verify` checks two things that have already gone wrong once: that `dist/`
+matches `src/`, and that the **tag equals the `version` field**. They drifted
+on v0.1.1, so an installed package reported a version that did not exist.
+
+Consumers set `allow-git=root` in `.npmrc` — npm 12 refuses git dependencies
+by default. `npm ci` honours `root`; adding or moving the pin needs a one-off
+`npm install --allow-git=all` on the command line, which is why the looser
+value never gets committed.

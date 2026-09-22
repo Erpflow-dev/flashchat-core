@@ -36,8 +36,14 @@ other:
 npm i github:Erpflow-dev/flashchat-core#v0.1.0
 ```
 
-npm builds it on install (`prepare` runs `tsc`), so there is nothing to
-publish and no registry credentials to keep alive anywhere.
+`dist/` is **committed**, deliberately. npm 12 blocks install scripts by
+default (`allowScripts`), so a build-on-install `prepare` silently produces a
+package with no `dist/` at all — and npm 10 would run it while npm 12 would
+not, which is worse than either. Shipping the built output makes what
+installs byte-identical to what was tested, under every npm.
+
+The price is that `dist/` can drift from `src/`. `npm run verify` rebuilds
+and fails if the tree is dirty; run it before tagging.
 
 ## Working on it
 

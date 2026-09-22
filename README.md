@@ -22,10 +22,11 @@ compute it identically. `test/phone.test.js` is that document's worked table
 made executable; if a row changes, the document changes with it.
 
 One rule is worth repeating outside the code: **`sameEngineKey` is exact and
-must stay exact.** The engine's own `findExistingContact` forgives a
-last-8-digit difference, which is right for a shared inbox and wrong for a
-ledger — it can return a contact whose number is not the one you sent, and a
-wrong link puts one person's spending against another's name.
+must stay exact.** Contact lookup often forgives a trunk-prefix difference by
+comparing only the last digits, which is right for a shared inbox and wrong
+for a ledger — it can return a record for a number that is not the one you
+asked about, and a wrong link puts one person's spending against another's
+name.
 
 ## Using it
 
@@ -61,6 +62,10 @@ matches `src/`, and that the **tag equals the `version` field**. They drifted
 on v0.1.1, so an installed package reported a version that did not exist.
 
 Consumers set `allow-git=root` in `.npmrc` — npm 12 refuses git dependencies
-by default. `npm ci` honours `root`; adding or moving the pin needs a one-off
-`npm install --allow-git=all` on the command line, which is why the looser
-value never gets committed.
+by default, whatever the repo's visibility. `npm ci` honours `root`; adding or
+moving the pin needs a one-off `npm install --allow-git=all` on the command
+line, which is why the looser value never gets committed.
+
+The repo is public, so no credential is needed anywhere — not on a laptop, not
+in a Docker build, not in CI. The install stages still need `git` itself,
+which `node:*-alpine` does not ship.

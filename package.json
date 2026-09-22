@@ -1,6 +1,6 @@
 {
   "name": "flashchat-core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Pure logic shared by the Flash Chat engine and the POS. No I/O.",
   "license": "UNLICENSED",
   "main": "dist/index.js",

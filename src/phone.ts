@@ -84,16 +84,17 @@ export function normalizeForEngine(
 }
 
 /**
- * Whether two engine keys are the same number — EXACT equality, deliberately.
+ * Whether two keys are the same number — EXACT equality, deliberately.
  *
- * The engine's own `phonesMatch` compares the last 8 digits so that a shared
- * inbox can forgive a trunk prefix, and `findExistingContact` uses it. That
- * tolerance is right for a conversation and wrong for a ledger: it can return
- * a contact whose number is not the one we sent, and a wrong link puts one
- * person's spending against another's name.
+ * Contact lookup often forgives a trunk-prefix difference by comparing only
+ * the last digits of a number. That tolerance is right for a conversation —
+ * a shared inbox should not split one person into two threads — and wrong for
+ * a ledger, because it can return a record for a number that is not the one
+ * you asked about, and a wrong link puts one person's spending against
+ * another's name.
  *
- * So after upserting, verify with this — never with a suffix match. On false,
- * do not store the link; send the pair to reconciliation (docs/18 §2, §8).
+ * So verify a match with this and never with a suffix comparison. On false,
+ * do not store the link; send the pair to reconciliation.
  */
 export function sameEngineKey(a: unknown, b: unknown): boolean {
   return isEngineKey(a) && isEngineKey(b) && a === b;
